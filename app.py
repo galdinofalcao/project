@@ -9,10 +9,7 @@ df = pd.read_csv("vehicles.csv")
 
 
 #Creating the Data Viewer using Streamlit
-st.header('Data viewer') 
-st.dataframe(df)
-     
- 
+   
 df['model_year'] = df['model_year'].astype('Int64')
 median_model_year = df.groupby(
     'model')['model_year'].transform('median').astype(int)
@@ -31,6 +28,8 @@ df['type'] = df['type'].str.lower()
 df = df.drop(
     ['is_4wd', 'date_posted', 'paint_color'], axis=1)
 
+st.header('Data viewer') 
+st.dataframe(df)
                     
 #Formatting the data to create Chart of Vehicle Types by Year using Streamlit                 
 df_type = df[(df['type'].notnull()) & (
