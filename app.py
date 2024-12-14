@@ -53,9 +53,9 @@ st.write(fig)
 #Formatting the data to create Chart of Price vs Price vs Model Year vs Transmission Type using Streamlit                 
 df_price_model = df[(df['price'].notnull()) & (
     df['price'] < 100000) & (df['model_year'].notnull()) & (df['model_year'] >= 1995) & (df['model_year'] > 1950)
-    & (df['days_listed'].notnull()) & (df['odometer'].notnull())]
+    & (df['odometer'].notnull())]
 df_price_model = df_price_model[[
-    'price', 'model_year', 'transmission', 'days_listed', 'odometer']]
+    'price', 'model_year', 'transmission', 'odometer']]
 
 #Creating a scatter Chart of Price vs Model Year vs Days Listed vs Odometer using Streamlit
 st.header('Price vs Model Year vs Days Listed vs Odometer')
@@ -70,7 +70,7 @@ df_price_model_no_outliers = df_price_model[(
     df_price_model['model_year'] >= lower_bound) & (df_price_model['model_year'] <= upper_bound)]
 
 fig = px.scatter_matrix(df_price_model, color_discrete_sequence=px.colors.qualitative.Plotly, dimensions=[
-                        "price", "model_year", "days_listed", "odometer"], color="transmission", template="plotly")
+                        "price", "model_year", "odometer"], color="transmission", template="plotly")
 
 fig.update_traces(diagonal_visible=False)
 fig.update_layout(dragmode='select', width=1100, height=500)
