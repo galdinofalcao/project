@@ -63,8 +63,8 @@ st.header('Price vs Model Year vs Days Listed vs Odometer')
 lower_percentile = 0.03
 upper_percentile = 0.97
 
-lower_bound = df_vehicles['model_year'].quantile(lower_percentile)
-upper_bound = df_vehicles['model_year'].quantile(upper_percentile)
+lower_bound = df['model_year'].quantile(lower_percentile)
+upper_bound = df['model_year'].quantile(upper_percentile)
 
 df_price_model_no_outliers = df_price_model[(
     df_price_model['model_year'] >= lower_bound) & (df_price_model['model_year'] <= upper_bound)]
