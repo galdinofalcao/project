@@ -18,4 +18,4 @@ Clone the project repository from GitHub using the following command:
 1)	Go to the official repository in GitHub
 2)	Fork the repository to your account
 3)	git clone https://github.com/{MY_USER_NAME}/REPOSITORY.git in the command prompt. This will create the file in the directory 
-4) Launch the project on your local machine  
+4)  Launch the project on your local machine  
