@@ -5,7 +5,7 @@ import plotly.express as px
 
 
 # Importing the data
-df = pd.read_csv(r"C:\Users\galdi\OneDrive\Área de Trabalho\New folder\Triple Ten\Sprint 4\project-1\vehicles.csv")
+df = pd.read_csv("vehicles.csv")
 
 
 #Creating the Data Viewer using Streamlit
