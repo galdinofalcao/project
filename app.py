@@ -12,9 +12,26 @@ df = pd.read_csv("vehicles.csv")
 st.header('Data viewer') 
 st.dataframe(df)
      
-    
-     
-                     
+ 
+df['model_year'] = df['model_year'].astype('Int64')
+median_model_year = df.groupby(
+    'model')['model_year'].transform('median').astype(int)
+df['model_year'] = df['model_year'].fillna(median_model_year)
+
+median_cylinders_year = df.groupby(
+    'model')['cylinders'].transform('median')
+df['cylinders'] = df['cylinders'].fillna(
+    median_cylinders_year)
+
+median_odometer_year = df.groupby(
+    ['model_year'])['odometer'].transform('median')
+df['odometer'] = df['odometer'].fillna(median_odometer_year)
+
+df['type'] = df['type'].str.lower()
+df = df.drop(
+    ['is_4wd', 'date_posted', 'paint_color'], axis=1)
+
+                    
 #Formatting the data to create Chart of Vehicle Types by Year using Streamlit                 
 df_type = df[(df['type'].notnull()) & (
     df['model_year'].notnull()) & (df['model_year'] >= 1995)]
@@ -25,7 +42,7 @@ df_type_model = df_type.groupby(['type', 'model_year'])['type'].count(
 st.header('Vehicle Types by Year')
 fig = px.bar(df_type_model, x='model_year', y='count', hover_data=['type', 'model_year'],
              labels={'count': 'Number of Vehicles'},
-             color='type', height=400, color_discrete_sequence=px.colors.sequential.Darkmint, template="plotly")
+             color='type', height=400, color_discrete_sequence=px.colors.qualitative.Plotly, template="plotly")
 fig.update_layout(xaxis=dict(tickangle=270, tickmode='linear'), width=1100)
 
 #Display figure with Streamlit
@@ -42,7 +59,17 @@ df_price_model = df_price_model[[
 
 #Creating a scatter Chart of Price vs Model Year vs Days Listed vs Odometer using Streamlit
 st.header('Price vs Model Year vs Days Listed vs Odometer')
-fig = px.scatter_matrix(df_price_model, color_discrete_sequence=px.colors.sequential.Darkmint, dimensions=[
+
+lower_percentile = 0.03
+upper_percentile = 0.97
+
+lower_bound = df_vehicles['model_year'].quantile(lower_percentile)
+upper_bound = df_vehicles['model_year'].quantile(upper_percentile)
+
+df_price_model_no_outliers = df_price_model[(
+    df_price_model['model_year'] >= lower_bound) & (df_price_model['model_year'] <= upper_bound)]
+
+fig = px.scatter_matrix(df_price_model, color_discrete_sequence=px.colors.qualitative.Plotly, dimensions=[
                         "price", "model_year", "days_listed", "odometer"], color="transmission", template="plotly")
 
 fig.update_traces(diagonal_visible=False)
